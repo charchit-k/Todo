@@ -1,0 +1,42 @@
+.css-header{
+    margin-top: 30px;
+    padding: 10px 0;
+    background-color: cornflowerblue;
+    border: 1px solid grey;
+
+}
+.css-header h2{
+    margin-left: 60px;
+    color: white;
+}
+.css-add-todo{
+    background-color: beige;
+    height: 400px;
+    border: 1px solid grey;
+
+}
+.css-todos{
+    background-color: #f3efef;
+    height: 400px;
+    overflow-y: auto;
+    border: 1px solid grey;
+}
+.css-aim{
+    padding-top: 25px;
+    padding-left: 25px;
+}
+li{
+    border: 1px solid darkslateblue !important;
+}
+input[type=checkbox]:checked+label>span{
+    color: darkgrey;
+}
+input[type=checkbox]:checked+label>span:nth-of-type(odd){
+    text-decoration: line-through;
+}
+.css-todo-details{
+    color: white;
+}
+.css-remove-todo{
+    cursor: pointer;
+}
