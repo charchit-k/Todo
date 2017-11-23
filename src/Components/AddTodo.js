@@ -4,9 +4,17 @@ import PropTypes from 'prop-types';
 
 
 class AddTodo extends Component{
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
+        this.state = {
+            defaultDate : this.props.labels.defaultDate,
+            defaultInput : this.props.labels.defaultInput,
+            id: this.props.labels.id,
+            status: this.props.labels.status
+        };
         this.addTodo = this.addTodo.bind(this);
+        this.onAimChange = this.onAimChange.bind(this);
+        this.onDateChange = this.onDateChange.bind(this);
     }
 
     addTodo(e){
@@ -19,32 +27,59 @@ class AddTodo extends Component{
         }
         else{
             let newTodo = {
-                id: uuid.v4(),
-                status: false,
+                id: e.target.id|| uuid.v4(),
+                status: this.state.status,
                 aim: this.refs.aim.value,
                 date: this.refs.date.value
             };
             this.props.addTodo(newTodo);
-            this.refs.todoForm.reset();
+        }
+    }
+    onAimChange(e){
+        this.setState({
+            defaultInput : e.target.value
+        });
+    }
+    onDateChange(e){
+        this.setState({
+            defaultDate : e.target.value
+        });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.labels.defaultDate !== this.state.defaultDate) {
+            this.setState({
+                defaultDate: nextProps.labels.defaultDate,
+                defaultInput: nextProps.labels.defaultInput,
+                id: nextProps.labels.id,
+                status: nextProps.labels.status,
+            });
         }
     }
 
     render(){
+        let button = this.state.id === '' ?
+            <input type='button' className='btn btn-success' value={this.props.labels.addToDoBtn} onClick={this.addTodo}/> :
+            <input type='button' className='btn btn-success' value={this.props.labels.saveToDoBtn} onClick={this.addTodo} id ={this.state.id}/>;
         return(
             <div className="col-sm-5 css-add-todo">
-                <form onSubmit={this.addTodo} className='css-todo-form' ref='todoForm'>
+                <form className='css-todo-form' ref='todoForm'>
                     <div className="row">
                         <div className="col-sm-12 form-group">
-                            <input type="text" className="form-control" placeholder={this.props.labels.inputPlaceholder} ref='aim'/>
+                            <input type="text"
+                                   className="form-control"
+                                   placeholder={this.props.labels.inputPlaceholder}
+                                   ref='aim' value={this.state.defaultInput}
+                                   onChange={this.onAimChange}/>
                         </div>
                     </div>
                     <br/>
                     <div className="row">
                         <div className="col-sm-7">
-                            <input className="form-control" type="date" ref='date'/>
+                            <input className="form-control" type="date" ref='date' value={this.state.defaultDate} onChange={this.onDateChange}/>
                         </div>
                         <div className="col-sm-offset-1 col-sm-4">
-                            <button className='btn btn-success'>{this.props.labels.addToDoBtn}</button>
+                            {button}
                         </div>
                     </div>
                 </form>

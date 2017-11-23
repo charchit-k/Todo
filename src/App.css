@@ -9,6 +9,9 @@
     margin-left: 60px;
     color: white;
 }
+.css-action-btn{
+    margin-top: 20px;
+}
 .css-add-todo{
     background-color: beige;
     height: 400px;

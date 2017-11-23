@@ -22,7 +22,7 @@ class Header extends Component{
                     <div className="col-sm-5">
                         <h2>{this.props.head.title}</h2>
                     </div>
-                    <div className={`col-sm-7`}>
+                    <div className={`col-sm-7 css-action-btn`}>
                         <button className='btn btn-default pull-left' type="button" onClick={this.completeAll}>
                             <span className='glyphicon glyphicon-edit'></span> {this.props.head.completeAll}
                         </button>

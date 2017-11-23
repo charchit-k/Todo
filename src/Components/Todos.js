@@ -8,10 +8,13 @@ class Todos extends Component{
     removeTodo(id){
         this.props.removeTodo(id);
     }
+    editTodo(id){
+    this.props.editTodo(id);
+    }
     render(){
         let todos = this.props.todos.map((todo) => {
             return (
-                <li key={todo.id} className='row list-group-item active'>
+                <li id={todo.id} key={todo.id} className='row list-group-item active'>
                     <input type="checkbox" onChange={this.toggleTodoStatus.bind(this, todo.id)} className={`col-sm-1`} checked={todo.status}/>
                     <label className='css-todo-details col-sm-9'>
                         <div className="row">
@@ -19,6 +22,7 @@ class Todos extends Component{
                             <div className="col-sm-4"><span>{todo.date}</span></div>
                         </div>
                     </label>
+                    <span onClick={this.editTodo.bind(this, todo.id)} className={`css-remove-todo glyphicon glyphicon-pencil col-sm-1`}></span>
                     <span onClick={this.removeTodo.bind(this, todo.id)} className={`css-remove-todo glyphicon glyphicon-remove col-sm-1`}></span>
                 </li>
             );

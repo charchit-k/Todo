@@ -15,7 +15,12 @@ class App extends Component{
             },
             addToDoLbls: {
                 inputPlaceholder : 'My New To-do',
-                addToDoBtn: 'Add'
+                addToDoBtn: 'Add',
+                saveToDoBtn: 'Update',
+                defaultInput: '',
+                defaultDate: '',
+                id:'',
+                status: false
             },
             todos:  JSON.parse(localStorage.getItem('todoList')) || []
         };
@@ -24,14 +29,27 @@ class App extends Component{
         this.removeTodo = this.removeTodo.bind(this);
         this.completeAll = this.completeAll.bind(this);
         this.removeAll = this.removeAll.bind(this);
+        this.editTodo = this.editTodo.bind(this);
     }
 
     addTodo(newTodo){
-        let tempTodos = this.state.todos.slice();
+        let tempTodos = this.state.todos.slice(),
+            addToDoLbls = {...this.state.addToDoLbls},
+            currentTodo = tempTodos.filter(todo => todo.id === newTodo.id)[0];
+            if(currentTodo){
+                tempTodos.splice(currentTodo.id,1);
+            }
         tempTodos.push(newTodo);
-        this.setState({todos:tempTodos});
+        addToDoLbls.defaultInput= '';
+        addToDoLbls.defaultDate= '';
+        addToDoLbls.id= '';
+        this.setState({
+            todos: tempTodos,
+            addToDoLbls: addToDoLbls
+        });
         localStorage.setItem('todoList', JSON.stringify(tempTodos));
     }
+
     toggleTodoStatus(id, status){
         let tempTodos = this.state.todos.slice();
         $.each(tempTodos, (index, todo)=>{
@@ -64,6 +82,18 @@ class App extends Component{
         localStorage.setItem('todoList', JSON.stringify([]));
     }
 
+    editTodo(id){
+        let todos = this.state.todos.slice(),
+            currentTodo = todos.filter(todo => todo.id === id)[0],
+            addToDoLbls = {...this.state.addToDoLbls};
+        addToDoLbls.defaultInput= currentTodo.aim;
+        addToDoLbls.defaultDate= currentTodo.date;
+        addToDoLbls.id= currentTodo.id;
+        addToDoLbls.status= currentTodo.status;
+        this.setState({addToDoLbls});
+
+    }
+
     render(){
         return(
             <div>
@@ -71,7 +101,7 @@ class App extends Component{
                 <div className="container">
                     <div className='row'>
                         <AddTodo addTodo={this.addTodo} labels={this.state.addToDoLbls}/>
-                        <Todos todos={this.state.todos} toggleTodoStatus={this.toggleTodoStatus} removeTodo = {this.removeTodo}/>
+                        <Todos todos={this.state.todos} toggleTodoStatus={this.toggleTodoStatus} removeTodo = {this.removeTodo} editTodo ={this.editTodo}/>
                     </div>
                 </div>
             </div>
