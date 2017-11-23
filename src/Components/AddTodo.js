@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import uuid from 'uuid';
-import '../App.css';
+import PropTypes from 'prop-types';
+
+
 class AddTodo extends Component{
     constructor(){
         super();
@@ -30,7 +32,7 @@ class AddTodo extends Component{
     render(){
         return(
             <div className="col-sm-5 css-add-todo">
-                <form onSubmit={this.addTodo} className='css-aim' ref='todoForm'>
+                <form onSubmit={this.addTodo} className='css-todo-form' ref='todoForm'>
                     <div className="row">
                         <div className="col-sm-12 form-group">
                             <input type="text" className="form-control" placeholder={this.props.labels.inputPlaceholder} ref='aim'/>
@@ -52,3 +54,8 @@ class AddTodo extends Component{
 }
 
 export default AddTodo;
+
+AddTodo.propTypes ={
+    addTodo : PropTypes.func,
+    labels: PropTypes.object
+};

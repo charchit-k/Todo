@@ -1,28 +1,25 @@
 import React, {Component} from 'react';
-import '../App.css';
+import PropTypes from 'prop-types';
 
 class Todos extends Component{
-    constructor(props){
-        super(props);
-        this.toggleTodoStatus = this.toggleTodoStatus.bind(this);
-        this.removeTodo = this.removeTodo.bind(this);
+    toggleTodoStatus(id, e){
+        this.props.toggleTodoStatus(id, e.target.checked);
     }
-    toggleTodoStatus(e){
-        this.props.toggleTodoStatus(e.target.className, e.target.checked);
-    }
-    removeTodo(e){
-        this.props.removeTodo(e.target.className);
+    removeTodo(id){
+        this.props.removeTodo(id);
     }
     render(){
         let todos = this.props.todos.map((todo) => {
             return (
                 <li key={todo.id} className='row list-group-item active'>
-                    <input type="checkbox" onChange={this.toggleTodoStatus} className={todo.id} checked={todo.status}/>
-                    <label id={todo.id} className='css-todo-details'>
-                        <span className="col-sm-6">{todo.aim}</span>
-                        <span className="col-sm-5">{todo.date}</span>
+                    <input type="checkbox" onChange={this.toggleTodoStatus.bind(this, todo.id)} className={`col-sm-1`} checked={todo.status}/>
+                    <label className='css-todo-details col-sm-9'>
+                        <div className="row">
+                            <div className="col-sm-8"><span>{todo.aim}</span></div>
+                            <div className="col-sm-4"><span>{todo.date}</span></div>
+                        </div>
                     </label>
-                    <span onClick={this.removeTodo} className={`float-right ${todo.id} css-remove-todo`}>X</span>
+                    <span onClick={this.removeTodo.bind(this, todo.id)} className={`css-remove-todo glyphicon glyphicon-remove col-sm-1`}></span>
                 </li>
             );
         });
@@ -37,3 +34,9 @@ class Todos extends Component{
 }
 
 export default Todos;
+
+Todos.propTypes ={
+    toggleTodoStatus : PropTypes.func,
+    removeTodo : PropTypes.func,
+    todos: PropTypes.array
+};

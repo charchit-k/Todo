@@ -1,6 +1,6 @@
 .css-header{
     margin-top: 30px;
-    padding: 10px 0;
+    padding: 5px 0;
     background-color: cornflowerblue;
     border: 1px solid grey;
 
@@ -21,17 +21,17 @@
     overflow-y: auto;
     border: 1px solid grey;
 }
-.css-aim{
-    padding-top: 25px;
+.css-todo-form{
+    padding-top: 55px;
     padding-left: 25px;
 }
 li{
     border: 1px solid darkslateblue !important;
 }
-input[type=checkbox]:checked+label>span{
+input[type=checkbox]:checked+label div>span{
     color: darkgrey;
 }
-input[type=checkbox]:checked+label>span:nth-of-type(odd){
+input[type=checkbox]:checked+label div:nth-of-type(odd)>span{
     text-decoration: line-through;
 }
 .css-todo-details{

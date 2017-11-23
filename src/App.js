@@ -8,7 +8,11 @@ class App extends Component{
     constructor(props){
         super(props);
         this.state ={
-            title:'My To-Do',
+            head: {
+                title:'My To-Do',
+                removeAll: 'Remove All',
+                completeAll: 'Complete All'
+            },
             addToDoLbls: {
                 inputPlaceholder : 'My New To-do',
                 addToDoBtn: 'Add'
@@ -18,6 +22,8 @@ class App extends Component{
         this.addTodo = this.addTodo.bind(this);
         this.toggleTodoStatus = this.toggleTodoStatus.bind(this);
         this.removeTodo = this.removeTodo.bind(this);
+        this.completeAll = this.completeAll.bind(this);
+        this.removeAll = this.removeAll.bind(this);
     }
 
     addTodo(newTodo){
@@ -44,10 +50,24 @@ class App extends Component{
         localStorage.setItem('todoList', JSON.stringify(tempTodos));
     }
 
+    completeAll(){
+        let tempTodos = this.state.todos.slice();
+        $.each(tempTodos, (index, todo)=>{
+            todo.status = true;
+        });
+        this.setState({todos:tempTodos});
+        localStorage.setItem('todoList', JSON.stringify(tempTodos));
+    }
+
+    removeAll(){
+        this.setState({todos: []});
+        localStorage.setItem('todoList', JSON.stringify([]));
+    }
+
     render(){
         return(
             <div>
-                <Header title={this.state.title}/>
+                <Header head={this.state.head} completeAll={this.completeAll} removeAll={this.removeAll}/>
                 <div className="container">
                     <div className='row'>
                         <AddTodo addTodo={this.addTodo} labels={this.state.addToDoLbls}/>
