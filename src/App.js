@@ -15,7 +15,7 @@ class App extends Component{
             addToDoLbls: {
                 inputPlaceholder : 'My New To-do',
                 addToDoBtn: 'Add',
-                saveToDoBtn: 'Update',
+                updateToDoBtn: 'Update',
                 defaultInput: '',
                 defaultDate: '',
                 id:'',
@@ -29,15 +29,12 @@ class App extends Component{
         this.completeAll = this.completeAll.bind(this);
         this.removeAll = this.removeAll.bind(this);
         this.editTodo = this.editTodo.bind(this);
+        this.updateTodo = this.updateTodo.bind(this);
     }
 
     addTodo(newTodo){
         let tempTodos = this.state.todos.slice(),
-            addToDoLbls = {...this.state.addToDoLbls},
-            currentTodo = tempTodos.filter(todo => todo.id === newTodo.id)[0];
-            if(currentTodo){
-                tempTodos.splice(currentTodo.id,1);
-            }
+            addToDoLbls = {...this.state.addToDoLbls};
         addToDoLbls.defaultInput= '';
         addToDoLbls.defaultDate= '';
         addToDoLbls.id= '';
@@ -47,9 +44,26 @@ class App extends Component{
         });
         localStorage.setItem('todoList', JSON.stringify([...tempTodos, newTodo]));
     }
-
+    updateTodo(newTodo){
+        let tempTodos = this.state.todos.slice(),
+            addToDoLbls = {...this.state.addToDoLbls};
+        addToDoLbls.defaultInput= '';
+        addToDoLbls.defaultDate= '';
+        addToDoLbls.id= '';
+       let tempTodos1 = tempTodos.map(todo => {
+           if(todo.id === newTodo.id){
+               return {...todo, ...newTodo};
+           }
+           return todo;
+        });
+        this.setState({
+            todos: tempTodos1,
+            addToDoLbls: addToDoLbls
+        });
+        localStorage.setItem('todoList', JSON.stringify(tempTodos1));
+    }
     toggleTodoStatus(id){
-       let tempTodos =  this.state.todos.map(todo => {
+        let tempTodos =  this.state.todos.map((todo, index) => {
             if(todo.id === id){
                 return {...todo , status: !todo.status};
             }
@@ -68,7 +82,7 @@ class App extends Component{
 
     completeAll(){
         let tempTodos = this.state.todos.slice().map(todo => {
-           return {...todo, status:true};
+            return {...todo, status:true};
         });
         this.setState({todos:tempTodos});
         localStorage.setItem('todoList', JSON.stringify(tempTodos));
@@ -97,7 +111,7 @@ class App extends Component{
                 <Header head={this.state.head} completeAll={this.completeAll} removeAll={this.removeAll}/>
                 <div className="container">
                     <div className='row'>
-                        <AddTodo addTodo={this.addTodo} labels={this.state.addToDoLbls}/>
+                        <AddTodo addTodo={this.addTodo} updateTodo = {this.updateTodo} labels={this.state.addToDoLbls}/>
                         <Todos todos={this.state.todos} toggleTodoStatus={this.toggleTodoStatus} removeTodo = {this.removeTodo} editTodo ={this.editTodo}/>
                     </div>
                 </div>
