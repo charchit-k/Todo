@@ -35,6 +35,14 @@ class AddTodo extends Component{
             this.props.addTodo(newTodo);
         }
     }
+    updateTodo(){
+        this.props.updateTodo({
+            id: this.state.id,
+            status: this.state.status,
+            aim: this.refs.aim.value,
+            date: this.refs.date.value
+        });
+    }
     onAimChange(e){
         this.setState({
             defaultInput : e.target.value
@@ -60,7 +68,7 @@ class AddTodo extends Component{
     render(){
         let button = this.state.id === '' ?
             <input type='button' className='btn btn-success' value={this.props.labels.addToDoBtn} onClick={this.addTodo}/> :
-            <input type='button' className='btn btn-success' value={this.props.labels.saveToDoBtn} onClick={this.addTodo} id ={this.state.id}/>;
+            <input type='button' className='btn btn-success' value={this.props.labels.updateToDoBtn} onClick={this.updateTodo.bind(this)} id ={this.state.id}/>;
         return(
             <div className="col-sm-5 css-add-todo">
                 <form className='css-todo-form' ref='todoForm'>
