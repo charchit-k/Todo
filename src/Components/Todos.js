@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 class Todos extends Component{
-    toggleTodoStatus(id, e){
-        this.props.toggleTodoStatus(id, e.target.checked);
+    toggleTodoStatus(id){
+        this.props.toggleTodoStatus(id);
     }
     removeTodo(id){
         this.props.removeTodo(id);

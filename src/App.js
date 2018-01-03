@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
-import AddTodo from './Components/AddTodo';
-import Header from './Components/Header';
-import Todos from './Components/Todos';
+import AddTodo from './components/AddTodo';
+import Header from './components/Header';
+import Todos from './components/Todos';
 
 class App extends Component{
     constructor(props){
@@ -39,23 +38,22 @@ class App extends Component{
             if(currentTodo){
                 tempTodos.splice(currentTodo.id,1);
             }
-        tempTodos.push(newTodo);
         addToDoLbls.defaultInput= '';
         addToDoLbls.defaultDate= '';
         addToDoLbls.id= '';
         this.setState({
-            todos: tempTodos,
+            todos: [...tempTodos, newTodo],
             addToDoLbls: addToDoLbls
         });
-        localStorage.setItem('todoList', JSON.stringify(tempTodos));
+        localStorage.setItem('todoList', JSON.stringify([...tempTodos, newTodo]));
     }
 
-    toggleTodoStatus(id, status){
-        let tempTodos = this.state.todos.slice();
-        $.each(tempTodos, (index, todo)=>{
+    toggleTodoStatus(id){
+       let tempTodos =  this.state.todos.map(todo => {
             if(todo.id === id){
-                todo.status = status;
+                return {...todo , status: !todo.status};
             }
+            return todo;
         });
         this.setState({todos:tempTodos});
         localStorage.setItem('todoList', JSON.stringify(tempTodos));
@@ -69,9 +67,8 @@ class App extends Component{
     }
 
     completeAll(){
-        let tempTodos = this.state.todos.slice();
-        $.each(tempTodos, (index, todo)=>{
-            todo.status = true;
+        let tempTodos = this.state.todos.slice().map(todo => {
+           return {...todo, status:true};
         });
         this.setState({todos:tempTodos});
         localStorage.setItem('todoList', JSON.stringify(tempTodos));
