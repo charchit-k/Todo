@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import AddTodo from './components/AddTodo';
-import Header from './components/Header';
-import Todos from './components/Todos';
+/*import AddTodo from './AddTodo';
+import Header from './Header';
+import Todos from './Todos';*/
 
 class App extends Component{
     constructor(props){
@@ -72,14 +72,12 @@ class App extends Component{
         this.setState({todos:tempTodos});
         localStorage.setItem('todoList', JSON.stringify(tempTodos));
     }
-
     removeTodo(id){
         let tempTodos = this.state.todos.slice();
         tempTodos.splice(tempTodos.indexOf(id), 1);
         this.setState({todos:tempTodos});
         localStorage.setItem('todoList', JSON.stringify(tempTodos));
     }
-
     completeAll(){
         let tempTodos = this.state.todos.slice().map(todo => {
             return {...todo, status:true};
@@ -87,12 +85,10 @@ class App extends Component{
         this.setState({todos:tempTodos});
         localStorage.setItem('todoList', JSON.stringify(tempTodos));
     }
-
     removeAll(){
         this.setState({todos: []});
         localStorage.setItem('todoList', JSON.stringify([]));
     }
-
     editTodo(id){
         let todos = this.state.todos.slice(),
             currentTodo = todos.filter(todo => todo.id === id)[0],
@@ -104,17 +100,17 @@ class App extends Component{
         this.setState({addToDoLbls});
 
     }
-
     render(){
         return(
             <div>
-                <Header head={this.state.head} completeAll={this.completeAll} removeAll={this.removeAll}/>
+               {/* <Header head={this.state.head} completeAll={this.completeAll} removeAll={this.removeAll}/>
                 <div className="container">
                     <div className='row'>
                         <AddTodo addTodo={this.addTodo} updateTodo = {this.updateTodo} labels={this.state.addToDoLbls}/>
                         <Todos todos={this.state.todos} toggleTodoStatus={this.toggleTodoStatus} removeTodo = {this.removeTodo} editTodo ={this.editTodo}/>
                     </div>
-                </div>
+                </div>*/}
+                App
             </div>
         );
     }
