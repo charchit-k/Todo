@@ -1,119 +1,66 @@
 import React, { Component } from 'react';
-/*import AddTodo from './AddTodo';
+import AddTodo from './AddTodo';
 import Header from './Header';
-import Todos from './Todos';*/
+import Todos from './Todos';
+import * as todoActions from '../actions/todosAction';
+import { connect } from "react-redux";
 
 class App extends Component{
     constructor(props){
         super(props);
-        this.state ={
-            head: {
-                title:'My To-Do',
-                removeAll: 'Remove All',
-                completeAll: 'Complete All'
-            },
-            addToDoLbls: {
-                inputPlaceholder : 'My New To-do',
-                addToDoBtn: 'Add',
-                updateToDoBtn: 'Update',
-                defaultInput: '',
-                defaultDate: '',
-                id:'',
-                status: false
-            },
-            todos:  JSON.parse(localStorage.getItem('todoList')) || []
-        };
-        this.addTodo = this.addTodo.bind(this);
         this.toggleTodoStatus = this.toggleTodoStatus.bind(this);
         this.removeTodo = this.removeTodo.bind(this);
-        this.completeAll = this.completeAll.bind(this);
+        this.toggleAllTodos = this.toggleAllTodos.bind(this);
         this.removeAll = this.removeAll.bind(this);
         this.editTodo = this.editTodo.bind(this);
-        this.updateTodo = this.updateTodo.bind(this);
     }
 
-    addTodo(newTodo){
-        let tempTodos = this.state.todos.slice(),
-            addToDoLbls = {...this.state.addToDoLbls};
-        addToDoLbls.defaultInput= '';
-        addToDoLbls.defaultDate= '';
-        addToDoLbls.id= '';
-        this.setState({
-            todos: [...tempTodos, newTodo],
-            addToDoLbls: addToDoLbls
-        });
-        localStorage.setItem('todoList', JSON.stringify([...tempTodos, newTodo]));
-    }
-    updateTodo(newTodo){
-        let tempTodos = this.state.todos.slice(),
-            addToDoLbls = {...this.state.addToDoLbls};
-        addToDoLbls.defaultInput= '';
-        addToDoLbls.defaultDate= '';
-        addToDoLbls.id= '';
-       let tempTodos1 = tempTodos.map(todo => {
-           if(todo.id === newTodo.id){
-               return {...todo, ...newTodo};
-           }
-           return todo;
-        });
-        this.setState({
-            todos: tempTodos1,
-            addToDoLbls: addToDoLbls
-        });
-        localStorage.setItem('todoList', JSON.stringify(tempTodos1));
-    }
+
     toggleTodoStatus(id){
-        let tempTodos =  this.state.todos.map((todo, index) => {
-            if(todo.id === id){
-                return {...todo , status: !todo.status};
-            }
-            return todo;
-        });
-        this.setState({todos:tempTodos});
-        localStorage.setItem('todoList', JSON.stringify(tempTodos));
+        const { dispatch } = this.props;
+        dispatch(todoActions.toggleTodo(id));
     }
     removeTodo(id){
-        let tempTodos = this.state.todos.slice();
-        tempTodos.splice(tempTodos.indexOf(id), 1);
-        this.setState({todos:tempTodos});
-        localStorage.setItem('todoList', JSON.stringify(tempTodos));
+        const { dispatch } = this.props;
+        dispatch(todoActions.removeTodo(id));
     }
-    completeAll(){
-        let tempTodos = this.state.todos.slice().map(todo => {
-            return {...todo, status:true};
-        });
-        this.setState({todos:tempTodos});
-        localStorage.setItem('todoList', JSON.stringify(tempTodos));
+    toggleAllTodos(){
+        const { dispatch } = this.props;
+        dispatch(todoActions.toggleAllTodos());
     }
     removeAll(){
-        this.setState({todos: []});
-        localStorage.setItem('todoList', JSON.stringify([]));
+        const { dispatch } = this.props;
+        dispatch(todoActions.removeAllTodos());
     }
     editTodo(id){
-        let todos = this.state.todos.slice(),
-            currentTodo = todos.filter(todo => todo.id === id)[0],
-            addToDoLbls = {...this.state.addToDoLbls};
-        addToDoLbls.defaultInput= currentTodo.aim;
-        addToDoLbls.defaultDate= currentTodo.date;
-        addToDoLbls.id= currentTodo.id;
-        addToDoLbls.status= currentTodo.status;
-        this.setState({addToDoLbls});
+        const { dispatch, todos } = this.props;
+        dispatch(todoActions.editTodo( todos.filter(todo => todo.id === id)[0]));
 
     }
     render(){
         return(
             <div>
-               {/* <Header head={this.state.head} completeAll={this.completeAll} removeAll={this.removeAll}/>
+                <Header toggleAllTodos={this.toggleAllTodos} removeAll={this.removeAll}/>
                 <div className="container">
                     <div className='row'>
-                        <AddTodo addTodo={this.addTodo} updateTodo = {this.updateTodo} labels={this.state.addToDoLbls}/>
-                        <Todos todos={this.state.todos} toggleTodoStatus={this.toggleTodoStatus} removeTodo = {this.removeTodo} editTodo ={this.editTodo}/>
+                        <AddTodo />
+                        <Todos todos={this.props.todos} toggleTodoStatus={this.toggleTodoStatus} removeTodo = {this.removeTodo} editTodo ={this.editTodo}/>
                     </div>
-                </div>*/}
-                App
+                </div>
             </div>
         );
     }
 }
 
-export default App;
+
+function mapStateToProps(state) {
+    const todos = state.todoApp.todos;
+    return {
+        todos
+    };
+}
+
+export default connect(mapStateToProps)(App);
+
+
+

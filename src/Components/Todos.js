@@ -11,8 +11,12 @@ class Todos extends Component{
     editTodo(id){
     this.props.editTodo(id);
     }
+
     render(){
-        let todos = this.props.todos.map((todo) => {
+        let todos = [];
+        if(this.props.todos.length >0)
+        {
+        todos = this.props.todos.map((todo) => {
             return (
                 <li id={todo.id} key={todo.id} className='row list-group-item active'>
                     <input type="checkbox" onChange={this.toggleTodoStatus.bind(this, todo.id)} className={`col-sm-1`} checked={todo.status}/>
@@ -27,6 +31,8 @@ class Todos extends Component{
                 </li>
             );
         });
+        }
+
         return (
             <div className="col-sm-7 css-todos">
                 <ul className='list-group'>

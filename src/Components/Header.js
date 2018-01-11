@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 class Header extends Component{
     constructor(){
         super();
-        this.completeAll = this.completeAll.bind(this);
+        this.toggleAllTodos = this.toggleAllTodos.bind(this);
         this.removeAll = this.removeAll.bind(this);
     }
 
-    completeAll(){
-        this.props.completeAll();
+    toggleAllTodos(){
+        this.props.toggleAllTodos();
     }
     removeAll(){
         this.props.removeAll();
@@ -20,14 +20,14 @@ class Header extends Component{
             <div className="container">
                 <div className="row css-header">
                     <div className="col-sm-5">
-                        <h2>{this.props.head.title}</h2>
+                        <h2>My To-Do</h2>
                     </div>
                     <div className={`col-sm-7 css-action-btn`}>
-                        <button className='btn btn-default pull-left' type="button" onClick={this.completeAll}>
-                            <span className='glyphicon glyphicon-edit'></span> {this.props.head.completeAll}
+                        <button className='btn btn-default pull-left' type="button" onClick={this.toggleAllTodos}>
+                            <span className='glyphicon glyphicon-edit'></span> Toggle All
                         </button>
                         <button className='btn btn-danger pull-right' type="button" onClick={this.removeAll}>
-                            <span className='glyphicon glyphicon-trash'></span> {this.props.head.removeAll}
+                            <span className='glyphicon glyphicon-trash'></span> Remove All
                         </button>
                     </div>
                 </div>
